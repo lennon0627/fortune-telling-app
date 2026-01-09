@@ -1,0 +1,723 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'メイリオ', Meiryo, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* 星の背景 */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 60px 70px, white, transparent),
+        radial-gradient(1px 1px at 50px 50px, white, transparent),
+        radial-gradient(1px 1px at 130px 80px, white, transparent),
+        radial-gradient(2px 2px at 90px 10px, white, transparent);
+    background-size: 200px 200px;
+    animation: twinkle 5s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* ヘッダー */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title {
+    color: white;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.title-main {
+    display: block;
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.title-sub {
+    display: block;
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* カード */
+.fortune-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-header h2 {
+    color: #667eea;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+/* フォーム */
+.fortune-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-group label {
+    color: #333;
+    font-weight: bold;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.label-icon {
+    font-size: 1.3em;
+}
+
+.input-group input {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 日付・時刻セレクト */
+.date-selects,
+.time-selects {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.date-selects select,
+.time-selects select {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 80px;
+}
+
+.date-selects select:focus,
+.time-selects select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.date-separator,
+.time-separator {
+    color: #667eea;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* 性別選択 */
+.gender-selects {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.gender-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.gender-option:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+}
+
+.gender-option input[type="radio"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.gender-option input[type="radio"]:checked + span {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.gender-option:has(input[type="radio"]:checked) {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.gender-option span {
+    font-size: 1em;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+
+.submit-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-sparkle {
+    display: inline-block;
+    animation: sparkle 1s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* 結果セクション */
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.results.hidden {
+    display: none;
+}
+
+.result-section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.result-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    color: #667eea;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.center-title {
+    justify-content: center;
+}
+
+.icon {
+    font-size: 1.2em;
+}
+
+.result-content {
+    color: #333;
+    line-height: 1.8;
+}
+
+/* =========================================
+   総合ランキングセクション (画像に合わせて修正)
+   ========================================= */
+
+.ranking-section {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    border: 3px solid #f39c12;
+}
+
+.ranking-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* カード1: タイトル（干支×星） */
+.eto-sign-combo {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #d63031;
+    text-align: center;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* カード2: 点数 */
+.total-score-display {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.total-score-display .score-number {
+    font-size: 4em;
+    font-weight: bold;
+    color: #e17055;
+    display: block;
+    margin: 10px 0;
+}
+
+.total-score-display .score-label {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* カード3: 内訳（画像のようなベージュ色のカード） */
+.score-breakdown {
+    background: #fff8e1; /* 画像に合わせた薄いベージュ */
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0;
+    font-size: 0.9em;
+    border: 1px solid #ffe0b2;
+}
+
+.breakdown-title {
+    font-weight: bold;
+    color: #795548;
+    margin-bottom: 12px;
+    text-align: center;
+    font-size: 0.9em;
+    border-bottom: 1px dashed #d7ccc8;
+    padding-bottom: 8px;
+}
+
+.breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.breakdown-row:last-child {
+    border-bottom: none;
+}
+
+.main-row {
+    font-weight: bold;
+    color: #d35400;
+    font-size: 1.05em;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ffcc80;
+    padding-bottom: 8px;
+}
+
+.breakdown-sub-list {
+    margin-top: 5px;
+}
+
+.bd-label {
+    color: #555;
+}
+
+.bd-val {
+    color: #5e35b1;
+    font-weight: bold;
+}
+
+.breakdown-note {
+    font-size: 0.7em;
+    color: #999;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* カード4: 順位（白背景に赤文字） */
+.ranking-position {
+    text-align: center;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #d63031;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* =========================================
+   その他のスタイル
+   ========================================= */
+
+/* スター表示 */
+.star-display {
+    font-size: 1.5em;
+    color: #764ba2;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.number-display {
+    font-size: 1.5em;
+    color: #764ba2;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* ラッキー情報 */
+.lucky-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.luck-item {
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.luck-item span {
+    color: #764ba2;
+}
+
+/* 四柱推命の柱表示 */
+.pillars {
+    margin-bottom: 20px;
+}
+
+.pillar-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.pillar-label {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.pillar-value {
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* 空亡表示 */
+.kubou-display {
+    margin-top: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe6f0 100%);
+    border-left: 4px solid #764ba2;
+    border-radius: 8px;
+}
+
+.kubou-display strong {
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+/* 五行バー */
+.element-bars {
+    margin: 20px 0;
+}
+
+.element-item {
+    display: grid;
+    grid-template-columns: 50px 1fr 30px;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.element-name {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.element-bar {
+    height: 20px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.element-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 1s ease-out;
+}
+
+.element-count {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* 五行レーダーチャート */
+.radar-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%);
+    border-radius: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.radar-chart-container h4 {
+    text-align: center;
+    margin: 20px 0 10px 0;
+    color: #667eea;
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    white-space: nowrap;
+    overflow: visible;
+    width: 100%;
+}
+
+#gogyouRadarChart {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 総合運勢 */
+.total {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe6f0 100%);
+    border: 2px solid #764ba2;
+}
+
+.total .result-content p {
+    margin-bottom: 15px;
+}
+
+.total .result-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* AIローディング表示 */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.total .result-content p:first-child:last-child {
+    animation: pulse 1.5s infinite;
+    text-align: center;
+    color: #764ba2;
+    font-weight: bold;
+}
+
+/* リセットボタン */
+.reset-btn {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+}
+
+/* コピー用セクション */
+.copy-section {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid #667eea;
+}
+
+.copy-textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.95em;
+    line-height: 1.6;
+    resize: vertical;
+    background: white;
+    color: #333;
+}
+
+.copy-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.copy-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.copy-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+/* AIボタングループ */
+.ai-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.ai-btn {
+    flex: 1;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gemini-btn {
+    background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+}
+
+.chatgpt-btn {
+    background: linear-gradient(135deg, #10a37f 0%, #1a7f64 100%);
+    box-shadow: 0 4px 15px rgba(16, 163, 127, 0.4);
+}
+
+.ai-icon {
+    font-size: 1.2em;
+}
+
+@media (max-width: 600px) {
+    .copy-actions { flex-direction: column; }
+    .ai-buttons { flex-direction: column; }
+    .copy-textarea { min-height: 150px; font-size: 0.9em; }
+    
+    .radar-chart-container h4 {
+        font-size: 1rem;
+        margin: 10px 0;
+    }
+    
+    #gogyouRadarChart {
+        max-width: 280px;
+        width: 100%;
+        height: auto;
+    }
+}
