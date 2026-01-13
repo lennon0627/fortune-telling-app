@@ -66,8 +66,13 @@ document.getElementById('fortuneForm').addEventListener('submit', async (e) => {
     const year = parseInt(document.getElementById('birthYear').value);
     const month = parseInt(document.getElementById('birthMonth').value);
     const day = parseInt(document.getElementById('birthDay').value);
-    const hour = parseInt(document.getElementById('birthHour').value) || 12;
-    const minute = parseInt(document.getElementById('birthMinute').value) || 0;
+    
+    // 時刻の取得（0時を正しく処理するため、空文字列チェックを先に行う）
+    const hourValue = document.getElementById('birthHour').value;
+    const minuteValue = document.getElementById('birthMinute').value;
+    const hour = hourValue === '' ? 12 : parseInt(hourValue);
+    const minute = minuteValue === '' ? 0 : parseInt(minuteValue);
+    
     const gender = document.querySelector('input[name="gender"]:checked').value;
     const name = document.getElementById('name').value || 'あなた';
 
@@ -282,6 +287,15 @@ function displayResults(results, name) {
 
 // コピー用テキスト生成
 function generateCopyText(results, name) {
+    // 五行バランスの情報を安全に取得
+    let elementsText = '';
+    if (results.shichu && results.shichu.elements) {
+        const elements = results.shichu.elements;
+        elementsText = `
+五行バランス:
+木: ${elements['木'] || 0}  火: ${elements['火'] || 0}  土: ${elements['土'] || 0}  金: ${elements['金'] || 0}  水: ${elements['水'] || 0}`;
+    }
+
     const text = `
 【${name}さんの究極の運勢占い結果】
 
@@ -303,7 +317,7 @@ ${results.kyusei.desc}
 ■ 四柱推命
 年柱: ${results.shichu.year}  月柱: ${results.shichu.month}
 日柱: ${results.shichu.day}  時柱: ${results.shichu.hour}
-空亡: ${results.shichu.kubou}
+空亡: ${results.shichu.kubou}${elementsText}
 ${results.shichu.desc.replace(/<[^>]*>/g, '')}
 
 ■ 五星三心占い
@@ -322,7 +336,8 @@ ${results.sukuyo.star}
 恋愛: ${results.sukuyo.love}
 
 ---
-この結果をもとに、さらに詳しい占いをAIに依頼してみてください！
+💡 AIへの質問例：
+「上記の占い結果を踏まえて、2026年の月別運勢を詳しく教えてください。特に転機となる時期や、注意すべき時期、恋愛運・金運・仕事運のベストタイミングを具体的に教えてください。」
 `.trim();
 
     document.getElementById('copyText').value = text;
