@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from datetime import datetime, date, timedelta  # 【修正1】timedeltaを追加
+from datetime import datetime, date
 from lunardate import LunarDate
 import html
 import os
@@ -278,17 +278,9 @@ def calculate_shichu_full(year, month, day, hour):
         "eto": ETO_LIST[year_idx % 12]
     }
 
-def calculate_sukuyo(year, month, day, hour):  # 【修正2】引数にhourを追加
+def calculate_sukuyo(year, month, day):
     """宿曜占星術の計算"""
-    # 日付オブジェクトを作成
-    target_date = date(year, month, day)
-
-    # 宿曜では「夜明け」を日付の区切りとします。
-    # ここでは午前5時より前に生まれた場合は「前日」として扱います。
-    if hour < 5:
-        target_date = target_date - timedelta(days=1)
-    
-    lunar = LunarDate.fromSolarDate(target_date.year, target_date.month, target_date.day)
+    lunar = LunarDate.fromSolarDate(year, month, day)
     l_month = lunar.month
     l_day = lunar.day
     
@@ -344,7 +336,7 @@ def calculate_fortune(data: UserData):
     try:
         kyusei = calculate_kyusei(data.year, data.month, data.day)
         shichu = calculate_shichu_full(data.year, data.month, data.day, data.hour)
-        sukuyo = calculate_sukuyo(data.year, data.month, data.day, data.hour) # 【修正3】引数にdata.hourを渡す
+        sukuyo = calculate_sukuyo(data.year, data.month, data.day)
         gosei = calculate_gosei(data.year, shichu['day_idx'])
         kabbalah = calculate_kabbalah(data.year, data.month, data.day)
         
