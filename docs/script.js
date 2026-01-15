@@ -3,6 +3,9 @@ const chartScript = document.createElement('script');
 chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
 document.head.appendChild(chartScript);
 
+// Render APIのベースURL
+const API_BASE_URL = 'https://fortune-telling-app-bv97.onrender.com';
+
 // 生年月日の選択肢を生成
 function populateDateSelects() {
     const yearSelect = document.getElementById('birthYear');
@@ -19,7 +22,7 @@ function populateDateSelects() {
         option.textContent = year;
         yearSelect.appendChild(option);
     }
-    // 初期値を1990年（範囲の真ん中あたり）に設定
+    // 初期値を1990年(範囲の真ん中あたり)に設定
     yearSelect.value = '1990';
 
     // 月の選択肢
@@ -29,7 +32,7 @@ function populateDateSelects() {
         option.textContent = month;
         monthSelect.appendChild(option);
     }
-    // 初期値を6月（真ん中）に設定
+    // 初期値を6月(真ん中)に設定
     monthSelect.value = '6';
 
     // 日の選択肢
@@ -39,7 +42,7 @@ function populateDateSelects() {
         option.textContent = day;
         daySelect.appendChild(option);
     }
-    // 初期値を15日（真ん中）に設定
+    // 初期値を15日(真ん中)に設定
     daySelect.value = '15';
 
     // 時の選択肢
@@ -67,7 +70,7 @@ document.getElementById('fortuneForm').addEventListener('submit', async (e) => {
     const month = parseInt(document.getElementById('birthMonth').value);
     const day = parseInt(document.getElementById('birthDay').value);
     
-    // 時刻の取得（0時を正しく処理するため、空文字列チェックを先に行う）
+    // 時刻の取得(0時を正しく処理するため、空文字列チェックを先に行う)
     const hourValue = document.getElementById('birthHour').value;
     const minuteValue = document.getElementById('birthMinute').value;
     const hour = hourValue === '' ? 12 : parseInt(hourValue);
@@ -87,10 +90,8 @@ document.getElementById('fortuneForm').addEventListener('submit', async (e) => {
         document.getElementById('results').classList.remove('hidden');
         document.querySelector('.fortune-card').style.display = 'none';
 
-        // API_BASE_URLが定義されていない場合は相対パスを使用
-        const apiUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
-        
-        const response = await fetch(`${apiUrl}/api/fortune`, {
+        // Render APIを呼び出す
+        const response = await fetch(`${API_BASE_URL}/api/fortune`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -191,7 +192,7 @@ function displayResults(results, name) {
             <span class="pillar-value">${shichu.hour}</span>
         </div>
         <div class="kubou-display">
-            <strong>空亡（天中殺）:</strong> ${shichu.kubou}
+            <strong>空亡(天中殺):</strong> ${shichu.kubou}
         </div>
     `;
 
@@ -214,7 +215,7 @@ function displayResults(results, name) {
 
     document.getElementById('shichuDesc').innerHTML = `<p>${shichu.desc}</p>`;
 
-    // 五行レーダーチャート（Chart.jsが読み込まれた後に実行）
+    // 五行レーダーチャート(Chart.jsが読み込まれた後に実行)
     setTimeout(() => {
         if (typeof Chart !== 'undefined') {
             const ctx = document.getElementById('gogyouRadarChart').getContext('2d');
@@ -336,7 +337,7 @@ ${results.sukuyo.star}
 恋愛: ${results.sukuyo.love}
 
 ---
-💡 AIへの質問例：
+💡 AIへの質問例:
 「上記の占い結果を踏まえて、2026年の月別運勢を詳しく教えてください。特に転機となる時期や、注意すべき時期、恋愛運・金運・仕事運のベストタイミングを具体的に教えてください。」
 `.trim();
 
@@ -351,7 +352,7 @@ document.getElementById('copyBtn').addEventListener('click', () => {
     
     const btn = document.getElementById('copyBtn');
     const originalText = btn.textContent;
-    btn.textContent = '✅ コピーしました！';
+    btn.textContent = '✅ コピーしました!';
     setTimeout(() => {
         btn.textContent = originalText;
     }, 2000);
