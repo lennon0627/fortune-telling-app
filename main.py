@@ -427,7 +427,7 @@ def calculate_fortune(data: UserData):
 # staticフォルダを静的ファイルとしてマウント
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# ルートパスにアクセスしたら staticフォルダ内の index.html を返す
+# ルートパスにアクセスしたら templatesフォルダ内の index.html を返す
 @app.get("/")
 async def read_index():
-    return FileResponse('static/index.html')
+    return FileResponse('templates/index.html')
