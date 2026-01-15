@@ -3,6 +3,8 @@ const chartScript = document.createElement('script');
 chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
 document.head.appendChild(chartScript);
 
+console.log('🏠 ローカル開発モード - ローカルAPIを使用します');
+
 // 生年月日の選択肢を生成
 function populateDateSelects() {
     const yearSelect = document.getElementById('birthYear');
@@ -12,14 +14,12 @@ function populateDateSelects() {
     const minuteSelect = document.getElementById('birthMinute');
 
     // 年の選択肢 (1950-2026)
-    // 最新の年を最初に表示するため、逆順で追加
     for (let year = 2026; year >= 1950; year--) {
         const option = document.createElement('option');
         option.value = year;
         option.textContent = year;
         yearSelect.appendChild(option);
     }
-    // 初期値を1990年（範囲の真ん中あたり）に設定
     yearSelect.value = '1990';
 
     // 月の選択肢
@@ -29,7 +29,6 @@ function populateDateSelects() {
         option.textContent = month;
         monthSelect.appendChild(option);
     }
-    // 初期値を6月（真ん中）に設定
     monthSelect.value = '6';
 
     // 日の選択肢
@@ -39,7 +38,6 @@ function populateDateSelects() {
         option.textContent = day;
         daySelect.appendChild(option);
     }
-    // 初期値を15日（真ん中）に設定
     daySelect.value = '15';
 
     // 時の選択肢
@@ -67,7 +65,6 @@ document.getElementById('fortuneForm').addEventListener('submit', async (e) => {
     const month = parseInt(document.getElementById('birthMonth').value);
     const day = parseInt(document.getElementById('birthDay').value);
     
-    // 時刻の取得（0時を正しく処理するため、空文字列チェックを先に行う）
     const hourValue = document.getElementById('birthHour').value;
     const minuteValue = document.getElementById('birthMinute').value;
     const hour = hourValue === '' ? 12 : parseInt(hourValue);
@@ -82,15 +79,11 @@ document.getElementById('fortuneForm').addEventListener('submit', async (e) => {
     }
 
     try {
-        // ローディング表示
         document.getElementById('totalFortune').innerHTML = '<p>AIが運勢を計算中...</p>';
         document.getElementById('results').classList.remove('hidden');
         document.querySelector('.fortune-card').style.display = 'none';
 
-        // API_BASE_URLが定義されていない場合は相対パスを使用
-        const apiUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
-        
-        const response = await fetch(`${apiUrl}/api/fortune`, {
+        const response = await fetch('/api/fortune', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,19 +115,15 @@ document.getElementById('fortuneForm').addEventListener('submit', async (e) => {
 
 // 結果表示
 function displayResults(results, name) {
-    // 干支×星の組み合わせ
     document.getElementById('etoSignCombo').textContent = 
         `${results.eto_year}年生まれ × ${results.kyusei.star}`;
 
-    // 総合スコア
     document.getElementById('totalScoreDisplay').innerHTML = `
         <div class="score-label">総合運勢スコア</div>
         <div class="score-number">${results.total_score}<small>/100</small></div>
     `;
 
-    // スコア内訳
     const detail = results.score_detail;
-    const bonusTotal = Object.values(detail.bonus).reduce((sum, item) => sum + item.score, 0);
     
     document.getElementById('scoreBreakdown').innerHTML = `
         <div class="breakdown-title">スコア内訳</div>
@@ -156,14 +145,11 @@ function displayResults(results, name) {
         <div class="breakdown-note">※小数点以下は切り捨て</div>
     `;
 
-    // ランキング順位
     document.getElementById('rankingPosition').textContent = 
         `108通り中 第${results.rank}位`;
 
-    // 総合鑑定メッセージ
     document.getElementById('totalFortune').innerHTML = results.fortune_text;
 
-    // 九星気学
     document.getElementById('kyuseiStar').textContent = results.kyusei.star;
     document.getElementById('kyuseiDesc').innerHTML = `
         <p>${results.kyusei.desc}</p>
@@ -175,7 +161,6 @@ function displayResults(results, name) {
         </div>
     `;
 
-    // 四柱推命
     const shichu = results.shichu;
     document.getElementById('shichuPillars').innerHTML = `
         <div class="pillar-row">
@@ -191,13 +176,11 @@ function displayResults(results, name) {
             <span class="pillar-value">${shichu.hour}</span>
         </div>
         <div class="kubou-display">
-            <strong>空亡（天中殺）:</strong> ${shichu.kubou}
+            <strong>空亡(天中殺):</strong> ${shichu.kubou}
         </div>
     `;
 
-    // 五行バランスバー
     const elements = shichu.elements;
-    const maxElement = Math.max(...Object.values(elements));
     document.getElementById('shichuElements').innerHTML = `
         <div class="element-bars">
             ${Object.entries(elements).map(([name, count]) => `
@@ -214,7 +197,6 @@ function displayResults(results, name) {
 
     document.getElementById('shichuDesc').innerHTML = `<p>${shichu.desc}</p>`;
 
-    // 五行レーダーチャート（Chart.jsが読み込まれた後に実行）
     setTimeout(() => {
         if (typeof Chart !== 'undefined') {
             const ctx = document.getElementById('gogyouRadarChart').getContext('2d');
@@ -264,30 +246,24 @@ function displayResults(results, name) {
         }
     }, 500);
 
-    // 五星三心
     document.getElementById('goseiType').textContent = results.gosei.type;
     document.getElementById('goseiDesc').innerHTML = `<p>${results.gosei.desc}</p>`;
 
-    // カバラ数秘術
     document.getElementById('kabbalahNumber').textContent = 
         `運命数: ${results.kabbalah.num}`;
     document.getElementById('kabbalahDesc').innerHTML = 
         `<p><strong>${results.kabbalah.desc}</strong></p>`;
 
-    // 宿曜占星術
     document.getElementById('sukuyoStar').textContent = results.sukuyo.star;
     document.getElementById('sukuyoDesc').innerHTML = `<p>${results.sukuyo.desc}</p>`;
     document.getElementById('sukuyoFortune').innerHTML = `<p>${results.sukuyo.fortune}</p>`;
     document.getElementById('sukuyoWork').innerHTML = `<p>${results.sukuyo.work}</p>`;
     document.getElementById('sukuyoLove').innerHTML = `<p>${results.sukuyo.love}</p>`;
 
-    // コピー用テキスト生成
     generateCopyText(results, name);
 }
 
-// コピー用テキスト生成
 function generateCopyText(results, name) {
-    // 五行バランスの情報を安全に取得
     let elementsText = '';
     if (results.shichu && results.shichu.elements) {
         const elements = results.shichu.elements;
@@ -336,14 +312,13 @@ ${results.sukuyo.star}
 恋愛: ${results.sukuyo.love}
 
 ---
-💡 AIへの質問例：
+💡 AIへの質問例:
 「上記の占い結果を踏まえて、2026年の月別運勢を詳しく教えてください。特に転機となる時期や、注意すべき時期、恋愛運・金運・仕事運のベストタイミングを具体的に教えてください。」
 `.trim();
 
     document.getElementById('copyText').value = text;
 }
 
-// コピーボタン
 document.getElementById('copyBtn').addEventListener('click', () => {
     const copyText = document.getElementById('copyText');
     copyText.select();
@@ -351,13 +326,12 @@ document.getElementById('copyBtn').addEventListener('click', () => {
     
     const btn = document.getElementById('copyBtn');
     const originalText = btn.textContent;
-    btn.textContent = '✅ コピーしました！';
+    btn.textContent = '✅ コピーしました!';
     setTimeout(() => {
         btn.textContent = originalText;
     }, 2000);
 });
 
-// リセット機能
 function resetForm() {
     document.getElementById('results').classList.add('hidden');
     document.querySelector('.fortune-card').style.display = 'block';
@@ -365,5 +339,4 @@ function resetForm() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ページ読み込み時に日付選択肢を生成
 populateDateSelects();
