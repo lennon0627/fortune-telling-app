@@ -67,6 +67,37 @@ body {
     opacity: 0.9;
 }
 
+/* スマホ対応 - タイトルが折り返さないように調整 */
+@media (max-width: 480px) {
+    .title-main {
+        font-size: 1.8em;
+    }
+    
+    .title-sub {
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 380px) {
+    .title-main {
+        font-size: 1.5em;
+    }
+    
+    .title-sub {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 320px) {
+    .title-main {
+        font-size: 1.3em;
+    }
+    
+    .title-sub {
+        font-size: 0.75em;
+    }
+}
+
 /* カード */
 .fortune-card {
     background: white;
